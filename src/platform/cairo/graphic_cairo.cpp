@@ -107,7 +107,7 @@ Cairo::RefPtr<Cairo::Context> TextLayout_cairo::_img_context;
 
 TextLayout_cairo::TextLayout_cairo(const wstring& src, const sptr<Font_cairo>& f) {
   if (!_img_context) {
-    auto surface = Cairo::ImageSurface::create(Cairo::FORMAT_ARGB32, 1, 1);
+    auto surface = Cairo::ImageSurface::create(Cairo::Surface::Format::ARGB32, 1, 1);
     _img_context = Cairo::Context::create(surface);
   }
 
@@ -116,19 +116,19 @@ TextLayout_cairo::TextLayout_cairo(const wstring& src, const sptr<Font_cairo>& f
   Pango::FontDescription fd;
   fd.set_family(f->getFamily());
   fd.set_absolute_size(f->getSize() * Pango::SCALE);
-  fd.set_style(Pango::STYLE_NORMAL);
-  fd.set_weight(Pango::WEIGHT_NORMAL);
+  fd.set_style(Pango::Style::NORMAL);
+  fd.set_weight(Pango::Weight::NORMAL);
 
   switch (f->getStyle()) {
     case BOLD:
-      fd.set_weight(Pango::WEIGHT_BOLD);
+      fd.set_weight(Pango::Weight::BOLD);
       break;
     case ITALIC:
-      fd.set_style(Pango::STYLE_ITALIC);
+      fd.set_style(Pango::Style::ITALIC);
       break;
     case BOLDITALIC:
-      fd.set_style(Pango::STYLE_ITALIC);
-      fd.set_weight(Pango::WEIGHT_BOLD);
+      fd.set_style(Pango::Style::ITALIC);
+      fd.set_weight(Pango::Weight::BOLD);
       break;
   }
 
@@ -201,31 +201,31 @@ void Graphics2D_cairo::setStroke(const Stroke& s) {
   _context->set_line_width((double) s.lineWidth);
 
   // convert abstract line cap to platform line cap
-  Cairo::LineCap c;
+  Cairo::Context::LineCap c;
   switch (s.cap) {
     case CAP_BUTT:
-      c = Cairo::LINE_CAP_BUTT;
+      c = Cairo::Context::LineCap::BUTT;
       break;
     case CAP_ROUND:
-      c = Cairo::LINE_CAP_ROUND;
+      c = Cairo::Context::LineCap::ROUND;
       break;
     case CAP_SQUARE:
-      c = Cairo::LINE_CAP_SQUARE;
+      c = Cairo::Context::LineCap::SQUARE;
       break;
   }
   _context->set_line_cap(c);
 
   // convert abstract line join to platform line join
-  Cairo::LineJoin j;
+  Cairo::Context::LineJoin j;
   switch (s.join) {
     case JOIN_BEVEL:
-      j = Cairo::LINE_JOIN_BEVEL;
+      j = Cairo::Context::LineJoin::BEVEL;
       break;
     case JOIN_ROUND:
-      j = Cairo::LINE_JOIN_ROUND;
+      j = Cairo::Context::LineJoin::ROUND;
       break;
     case JOIN_MITER:
-      j = Cairo::LINE_JOIN_MITER;
+      j = Cairo::Context::LineJoin::MITER;
       break;
   }
   _context->set_line_join(j);
